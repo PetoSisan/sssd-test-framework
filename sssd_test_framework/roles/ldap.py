@@ -2360,12 +2360,16 @@ class LDAPPasswordPolicy(GenericPasswordPolicy):
         return self
 
     def expiration(
-        self, enable: bool = True, max_age: int | None = None, grace_limit: int | None = None
+        self,
+        enable: bool = True,
+        max_age: int | None = None,
+        warning_time: int | None = None,
+        grace_limit: int | None = None,
     ) -> LDAPPasswordPolicy:
         """
         Enable or disable password expiration.
 
-        ``max_age`` and ``grace_limit`` are changed only when given.
+        ``max_age``, ``warning_time`` and ``grace_limit`` are changed only when given.
         When ``max_age`` is set, 389-DS computes ``passwordExpirationTime``
         from it at the next password change. Set it before setting the user's
         password, then wait at least that many seconds before authenticating.
@@ -2374,6 +2378,9 @@ class LDAPPasswordPolicy(GenericPasswordPolicy):
         :type enable: bool, optional
         :param max_age: Password lifetime in seconds (``passwordMaxAge``), defaults to None
         :type max_age: int | None, optional
+        :param warning_time: The number of seconds before expiration after which a warning should be sent
+            (``passwordWarning``), defaults to None
+        :type warning_time: int | None, optional
         :param grace_limit: Grace logins allowed after expiration (``passwordGraceLimit``), defaults to None
         :type grace_limit: int | None, optional
         :return: LDAPPasswordPolicy object.
@@ -2383,7 +2390,11 @@ class LDAPPasswordPolicy(GenericPasswordPolicy):
             "passwordExp": "on" if enable else "off",
         }
 
-        for attribute, value in [("passwordMaxAge", max_age), ("passwordGraceLimit", grace_limit)]:
+        for attribute, value in [
+            ("passwordMaxAge", max_age),
+            ("passwordWarning", warning_time),
+            ("passwordGraceLimit", grace_limit),
+        ]:
             if value is not None:
                 policy[attribute] = str(value)
 
