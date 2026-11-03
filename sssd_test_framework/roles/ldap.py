@@ -2376,12 +2376,14 @@ class LDAPPasswordPolicy(GenericPasswordPolicy):
 
         :param enable: Enable or disable password expiration (``passwordExp``), defaults to True
         :type enable: bool, optional
-        :param max_age: Password lifetime in seconds (``passwordMaxAge``), defaults to None
+        :param max_age: Password lifetime in seconds (``passwordMaxAge``),
+            valid range 1 to 2 ** 31 - 1, defaults to None
         :type max_age: int | None, optional
         :param warning_time: The number of seconds before expiration after which a warning should be sent
-            (``passwordWarning``), defaults to None
+            (``passwordWarning``), valid range 1 to 2 ** 31 - 1, defaults to None
         :type warning_time: int | None, optional
-        :param grace_limit: Grace logins allowed after expiration (``passwordGraceLimit``), defaults to None
+        :param grace_limit: Grace logins allowed after expiration (``passwordGraceLimit``),
+            valid range 0 to any reasonable integer, defaults to None
         :type grace_limit: int | None, optional
         :return: LDAPPasswordPolicy object.
         :rtype: LDAPPasswordPolicy
